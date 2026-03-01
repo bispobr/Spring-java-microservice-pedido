@@ -21,7 +21,7 @@ public class PedidoService {
                 item.setPedido(pedido);
             }
         }
-        log.info("Pedido Salvo com sucesso id:");
+        log.info("Pedido Salvo com sucesso:");
         return pedidoRepository.save(pedido);
     }
 
