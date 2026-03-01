@@ -44,6 +44,8 @@ public class PedidoController {
 
     @GetMapping
     @Operation(description = "Endpoint responsável listar todo os pedidos cadastrados")
+    @ApiResponse(responseCode = "200", description = "Listagem Bem sucedida")
+    @ApiResponse(responseCode = "500", description = "Erro interno")
     public List<Pedido> listarPedido(){
         log.info("Solicitação de listagem de pedido Recebida");
         return pedidoService.retornarTodosPedidos();
