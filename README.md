@@ -1,77 +1,162 @@
-# Microserviço de Cadastro de pedidos - Java Spring
-Este repositório contém a primeira etapa de um projeto de microserviços desenvolvido em Java com Spring, com foco na comunicação assíncrona entre serviços e na aplicação de boas práticas de observabilidade e documentação.
-## Descrição
+# Order Service
 
-A API oferece endpoints para cadastrar pedidos — contendo descrição e uma lista de itens (nome e quantidade) — e para listar todos os pedidos armazenados no banco de dados. Após o cadastro, os dados são publicados em uma fila do RabbitMQ e consumidos por um segundo microserviço, responsável pelo processamento assíncrono das informações.
+Microsserviço responsável pelo cadastro de pedidos e pela publicação das informações para processamento assíncrono.
 
-## Tecnologias  Utilizadas
+O serviço faz parte de um conjunto de microsserviços desenvolvido com Java e Spring Boot, utilizando RabbitMQ para comunicação assíncrona.
 
-- **Java + Spring Boot** – Framework principal da aplicação.
-- **RabbitMQ** com **CloudAMQP** – Comunicação assíncrona entre serviços.
-- **PostgreSQL** – Persistência dos dados.
-- **Lombok** – Uso da anotação `@Slf4j` para geração de logs.
-- **Springdoc OpenAPI (Swagger)** – Documentação dos endpoints da API.
-- **Spring Boot Actuator** – Monitoramento da aplicação.
-- Integração entre **Actuator e Swagger** para exposição de métricas via documentação da API.
-- **JUnit 5 + Mockito** – Testes Unitarios
+## Arquitetura
+
+Fluxo simplificado:
+
+```text
+Cliente
+   │
+   ▼
+Order Service
+   │
+   │ mensagem
+   ▼
+RabbitMQ
+   │
+   ▼
+Processing Service
+```
+
+Após o cadastro de um pedido, as informações são publicadas em uma fila RabbitMQ para consumo pelo serviço de processamento.
+
+## Responsabilidades
+
+- Cadastrar pedidos
+- Listar pedidos
+- Validar os dados recebidos
+- Publicar pedidos para processamento assíncrono
+- Disponibilizar documentação da API
+- Disponibilizar informações de saúde e métricas da aplicação
+
+## Tecnologias
+
+- Java 21
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Validation
+- Spring AMQP
+- RabbitMQ / CloudAMQP
+- PostgreSQL
+- H2
+- Springdoc OpenAPI
+- Spring Boot Actuator
+- JUnit 5
+- Mockito
 
 ## Requisitos
 
 - Java 21
 - Maven
 - PostgreSQL
+- RabbitMQ ou CloudAMQP
 
-## Executando o Projeto
+## Configuração
 
-1. Clone o repositório 1:
+As configurações de banco de dados e mensageria podem ser fornecidas por variáveis de ambiente.
+
+Exemplo:
+
+```properties
+DB_URL=jdbc:postgresql://localhost:5432/microservice-pedido
+DB_USERNAME=postgres
+DB_PASSWORD=senha
+RABBITMQ_ADDRESSES=amqps://...
+RABBITMQ_PROCESSING_QUEUE=...
+```
+
+Os valores devem ser configurados de acordo com o ambiente utilizado.
+
+## Executando
+
+Clone o repositório:
 
 ```bash
-git https://github.com/bispobr/Spring-java-microservice-pedido.git
+git clone https://github.com/bispobr/Spring-java-microservice-pedido.git
+cd Spring-java-microservice-pedido
 ```
-2. Clone o repositório 2:
+
+Compile e execute:
 
 ```bash
-git https://github.com/bispobr/Spring-java-microservice-processamento.git
+./mvnw clean package
+./mvnw spring-boot:run
 ```
 
-3. Altere o arquivo de configuração **application.properties** com as credenciais de login do PostgreSQL e endereços Rabbitmq do seu ambiente.
+A aplicação utiliza a porta `8081`.
 
+## API
 
-## Como usar
+### Criar pedido
 
-1. Inicie a aplicação
-2. A API está acessível através do endereço http://localhost:8081
-3. A documentação da API está acessível através do Link http://localhost:8081/swagger-ui/index.html#/
-4. O endpoint de saúde e métricas do Actuator está acessível através do Link http://localhost:8081/actuator/health
-
-## API Endpoints
-API contem os seguintes endpoints:
-
-```http request
-Post /pedidos - cadastra um novo pedido.
+```http
+POST /pedidos
 Content-Type: application/json
+```
+
+Exemplo:
+
+```json
 {
- "descricao": "xxxxxxx",
- "itens": [
-   {
-	"nome": "xxxxxx",
-	"quantidade":00
-   },
-   {
-	"nome": "xxxxxx",
-	"quantidade":00
-	}
+  "descricao": "Pedido de exemplo",
+  "itens": [
+    {
+      "nome": "Produto A",
+      "quantidade": 2
+    },
+    {
+      "nome": "Produto B",
+      "quantidade": 1
+    }
   ]
 }
 ```
 
-| Parâmetro   | Tipo      | Descrição                           |
-| :---------- |:----------| :---------------------------------- |
-| `descricao` | `String`  | **Obrigatório**.  Descrição do pedido 
-| `nome` | `String`  | **Obrigatório**.  nome do item
-| `quantidade` | `Integer` | **Obrigatório**. Quantidade de item
+### Listar pedidos
 
-```http request
-GET /pedidos - retorna todos os pedidos.
-
+```http
+GET /pedidos
 ```
+
+Retorna os pedidos cadastrados.
+
+## Documentação da API
+
+Com a aplicação em execução:
+
+```text
+http://localhost:8081/swagger-ui/index.html
+```
+
+## Actuator
+
+Endpoint de saúde:
+
+```text
+http://localhost:8081/actuator/health
+```
+
+O Actuator também disponibiliza métricas da aplicação.
+
+## Testes
+
+Execute:
+
+```bash
+./mvnw test
+```
+
+## Serviços relacionados
+
+- [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
+- [Processing Service](https://github.com/bispobr/Spring-java-microservice-processamento)
+- [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
+
+## Status
+
+Projeto de estudo desenvolvido para praticar desenvolvimento de APIs REST com Spring Boot, persistência com PostgreSQL e comunicação assíncrona utilizando RabbitMQ.
