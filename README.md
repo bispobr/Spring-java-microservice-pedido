@@ -149,11 +149,11 @@ Execute:
 ./mvnw test
 ```
 
-## Serviços relacionados
+## Serviço relacionado
 
-- [User Service](https://github.com/bispobr/Spring-java-microservice-usuario)
+
 - [Processing Service](https://github.com/bispobr/Spring-java-microservice-processamento)
-- [Email Service](https://github.com/bispobr/Spring-java-microservice-email)
+
 
 ## Status
 
