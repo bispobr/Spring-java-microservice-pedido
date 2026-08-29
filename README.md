@@ -68,7 +68,7 @@ As configurações de banco de dados e mensageria podem ser fornecidas por vari�
 | `RABBITMQ_ADDRESSES` | Endereço do RabbitMQ ou CloudAMQP | `amqps://...` |
 | `RABBITMQ_PROCESSING_QUEUE` | Nome da fila utilizada pelo serviço de processamento | `...` |
 
-Os valores devem ser configurados de acordo com o ambiente utilizado. Evite versionar credenciais ou outros dados sensíveis no repositório.
+Os valores devem ser configurados de acordo com o ambiente utilizado.
 
 ## Executando
 
