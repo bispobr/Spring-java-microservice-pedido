@@ -60,17 +60,15 @@ Após o cadastro de um pedido, as informações são publicadas em uma fila Rabb
 
 As configurações de banco de dados e mensageria podem ser fornecidas por variáveis de ambiente.
 
-Exemplo:
+| Variável | Descrição | Exemplo |
+|---|---|---|
+| `DB_URL` | URL de conexão com o PostgreSQL | `jdbc:postgresql://localhost:5432/microservice-pedido` |
+| `DB_USERNAME` | Usuário do PostgreSQL | `postgres` |
+| `DB_PASSWORD` | Senha do PostgreSQL | `senha` |
+| `RABBITMQ_ADDRESSES` | Endereço do RabbitMQ ou CloudAMQP | `amqps://...` |
+| `RABBITMQ_PROCESSING_QUEUE` | Nome da fila utilizada pelo serviço de processamento | `...` |
 
-```properties
-DB_URL=jdbc:postgresql://localhost:5432/microservice-pedido
-DB_USERNAME=postgres
-DB_PASSWORD=senha
-RABBITMQ_ADDRESSES=amqps://...
-RABBITMQ_PROCESSING_QUEUE=...
-```
-
-Os valores devem ser configurados de acordo com o ambiente utilizado.
+Os valores devem ser configurados de acordo com o ambiente utilizado. Evite versionar credenciais ou outros dados sensíveis no repositório.
 
 ## Executando
 
